@@ -160,7 +160,7 @@ namespace Artisan.CraftingLogic.Solvers
                                 }
                                 else
                                 {
-                                    DuoLog.Error($"Raphael was unable to solve this recipe. Please report this to the Discord with this line:\n\n{process.StartInfo.Arguments}");
+                                    DuoLog.Error($"Raphael was unable to solve this recipe, likely due to insufficient stats.");
                                 }
                             }
 
