@@ -19,22 +19,27 @@ namespace Artisan.CraftingLists
     internal class PremadeLists
     {
         public ListFolders PremadesUI;
+        private List<QuestRequiredItem>? _requiredItems = null;
         public List<QuestRequiredItem> RequiredItems
         {
             get
             {
+                if (_requiredItems != null)
+                {
+                    return _requiredItems;
+                }
                 var list = CsvLoader.LoadResource<QuestRequiredItem>(CsvLoader.QuestRequiredItemResourceName, true, out var failed, out var exceptions, Svc.Data.GameData);
                 static string questIdFix(string id) => $"{int.Parse(id) + 65536}";
                 List<string[]> fromQst = [
                     // uint ItemId,uint QuestId,uint Quantity,bool IsHq
                     // Crystalline Mean
-                    ["27237",questIdFix("3228"),"1","false"],
-                    ["27245",questIdFix("3231"),"1","false"],
+                    //["27237",questIdFix("3228"),"1","false"],
+                    //["27245",questIdFix("3231"),"1","false"],
                     // Studium
                     ["35588",questIdFix("4133"),"6","false"],
                     ["35589",questIdFix("4134"),"6","false"],
                     ["35590",questIdFix("4135"),"6","false"],
-                    ["35836",questIdFix("4136"),"1","false"],
+                    //["35836",questIdFix("4136"),"1","false"],
                     ["35591",questIdFix("4137"),"6","false"],
                     ["35592",questIdFix("4140"),"6","false"],
                     ["35593",questIdFix("4141"),"6","false"],
@@ -64,10 +69,12 @@ namespace Artisan.CraftingLists
                     questRequiredItem.FromCsv(data);
                     if (list.Any(x => x.ItemId.Equals(questRequiredItem.ItemId)))
                     {
+                        Svc.Log.Debug($"Item is in LuminaSupplemental data: {questRequiredItem.ItemId}");
                         continue;
                     }
                     list.Add(questRequiredItem);
                 }
+                _requiredItems = list;
                 return list;
             }
         }
